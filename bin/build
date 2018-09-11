@@ -4,4 +4,8 @@ set -e
 
 bin=$(dirname $0)
 
-$bin/go build -o $bin/../out/bosh github.com/cloudfoundry/bosh-cli
+if [ ! -d "$bin"/../.gopath ]; then
+  mkdir -p "$bin"/../.gopath/src/github.com/cloudfoundry
+  ln -s ../../../.. "$bin"/../.gopath/src/github.com/cloudfoundry/bosh-cli
+fi
+GOPATH=$(readlink -f "$bin"/../.gopath) "$bin"/go build -o "$bin"/../out/bosh github.com/cloudfoundry/bosh-cli
